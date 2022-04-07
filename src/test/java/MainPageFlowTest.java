@@ -2,7 +2,9 @@ import com.BrowserProperty;
 import com.UserOperations;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
+import io.qameta.allure.junit4.DisplayName;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import ru.praktikum.burger.po.AuthorizationPage;
@@ -13,27 +15,26 @@ import ru.praktikum.burger.po.MainPage;
 
 import java.util.Map;
 
-import static com.codeborne.selenide.Selenide.clearBrowserCookies;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.*;
 
 public class MainPageFlowTest extends BrowserProperty {
     @Before
     public void startUp() {
         browserPropertySetUp("yandex");// chrome
         clearBrowserCookies();
-
     }
 
     @After
     public void tearDown() {
         UserOperations userOperations = new UserOperations();
         userOperations.delete();
-
+        closeWindow();
+        closeWebDriver();
     }
 
     @Test
+    @DisplayName("Проверка перехода на главную страницу из личного кабинета по кнопке Конструктор")
     public void EnterToMainPageFromClientCabinetClickConstructorButtonTest() {
-
 
         MainPage mainPage = open(MainPage.URL, MainPage.class);
 
@@ -49,12 +50,12 @@ public class MainPageFlowTest extends BrowserProperty {
         HeaderPage headerPage = authorizationPage.clickEnterFromAuthorizationPageButton();
         ClientCabinetPage clientCabinetPage = headerPage.clickCabinetButtonAfterAuthorization();
         MainPage mainPageAfterClientCabinet = clientCabinetPage.clickConstructorButton();
-        //Проверка перехода в Конструктор
-        mainPageAfterClientCabinet.makeOderButton.shouldBe(Condition.visible);
 
+        Assert.assertTrue("Кнопка оформить заказ не отображается", mainPageAfterClientCabinet.isMakeOderButtonIsDisplayed());
     }
 
     @Test
+    @DisplayName("Проверка перехода на главную страницу из личного кабинета по кнопке логотипа")
     public void EnterToMainPageFromClientCabinetClickLStellarBurgerLogoTest() {
 
 
@@ -73,7 +74,6 @@ public class MainPageFlowTest extends BrowserProperty {
         ClientCabinetPage clientCabinetPage = headerPage.clickCabinetButtonAfterAuthorization();
         MainPage mainPageAfterClientCabinet = clientCabinetPage.clickStellarBurgerLogo();
         //Проверка перехода в Конструктор
-        mainPageAfterClientCabinet.makeOderButton.shouldBe(Condition.visible);
-
+        Assert.assertTrue("Кнопка оформить заказ не отображается", mainPageAfterClientCabinet.isMakeOderButtonIsDisplayed());
     }
 }

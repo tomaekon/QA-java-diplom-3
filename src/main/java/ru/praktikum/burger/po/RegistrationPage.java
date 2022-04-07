@@ -2,6 +2,7 @@ package ru.praktikum.burger.po;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
@@ -27,43 +28,43 @@ public class RegistrationPage extends HeaderPage {
 
     //Локатор ошибки "Некорректный пароль"
     @FindBy(how = How.XPATH, using = ".//p[text() ='Некорректный пароль']")
-    public SelenideElement incorrectPasswordString;
+    private SelenideElement incorrectPasswordString;
 
-
-    //Метод нажатия на кнопку Войти
+    @Step("Нажать на кнопку Соусы")
     public AuthorizationPage clickEnterButtonFromRegistrationPage() {
         enterFromRegistrationPageButton.click();
         return page(AuthorizationPage.class);
-
     }
 
-    //Метод заполнения поля Имя
+    @Step("Заполнить поле Имя")
     public void setNameField(String name) {
         emailAndNameField.first().setValue(name);
     }
 
-    //Метод заполнения поля Email
+    @Step("Заполнить поле Email")
     public void setEmailField(String email) {
         emailAndNameField.last().setValue(email);
     }
 
-    //Метод заполнения поля Пароль
+    @Step("Заполнить поле Пароль")
     public void setPasswordField(String password) {
         emailAndNameField.last().setValue(password);
         passwordField.setValue(password);
     }
 
-    //Метод нажатия на кнопку Зарегистрироваться c переходом на страницу авторизации
+    @Step("Нажать на кнопку Зарегистрироваться")
     public AuthorizationPage clickRegistrationButton() {
         registrationButton.click();
         return page(AuthorizationPage.class);
-
     }
 
-    //Метод нажатия на кнопку Зарегистрироваться без перехода на страницу авторизации
+    @Step("Нажать на кнопку Зарегистрироваться")
     public RegistrationPage clickRegistrationWithErrorButton() {
         registrationButton.click();
         return page(RegistrationPage.class);
-
+    }
+    @Step("Проверка отображения ошибки Некорректный пароль")
+    public boolean isIncorrectPasswordStringIsDisplayed() {
+        return incorrectPasswordString.isDisplayed();
     }
 }

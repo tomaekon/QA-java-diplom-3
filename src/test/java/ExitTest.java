@@ -2,7 +2,9 @@ import com.BrowserProperty;
 import com.UserOperations;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
+import io.qameta.allure.junit4.DisplayName;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import ru.praktikum.burger.po.AuthorizationPage;
@@ -12,8 +14,7 @@ import ru.praktikum.burger.po.MainPage;
 
 import java.util.Map;
 
-import static com.codeborne.selenide.Selenide.clearBrowserCookies;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.*;
 
 public class ExitTest extends BrowserProperty {
 
@@ -27,12 +28,13 @@ public class ExitTest extends BrowserProperty {
     public void tearDown() {
         UserOperations userOperations = new UserOperations();
         userOperations.delete();
-
+        closeWindow();
+        closeWebDriver();
     }
 
     @Test
+    @DisplayName("Проверка выхода из личного кабинета")
     public void ExitFromClientCabinetPageTest() {
-
 
         MainPage mainPage = open(MainPage.URL, MainPage.class);
 
@@ -49,9 +51,7 @@ public class ExitTest extends BrowserProperty {
         ClientCabinetPage clientCabinetPage = headerPage.clickCabinetButtonAfterAuthorization();
         AuthorizationPage authorizationPageAfterExit = clientCabinetPage.clickExitButton();
 
-        //Проверка перехода на страницу авторизации
-        authorizationPageAfterExit.enterFromAuthorizationPageButton.shouldBe(Condition.visible);
-
+        Assert.assertFalse("Кнопка Войти на странице авторизации не отображается", authorizationPageAfterExit.isEnterFromAuthorizationPageButtonIsDisplayed());
     }
 }
 

@@ -2,17 +2,21 @@ import com.BrowserProperty;
 import com.UserOperations;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
+import io.qameta.allure.junit4.DisplayName;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import ru.praktikum.burger.po.AuthorizationPage;
 import ru.praktikum.burger.po.ClientCabinetPage;
 import ru.praktikum.burger.po.HeaderPage;
 import ru.praktikum.burger.po.MainPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
+import java.awt.*;
 import java.util.Map;
 
 import static com.codeborne.selenide.Selenide.*;
@@ -22,7 +26,7 @@ public class ClientCabinetFlowTest extends BrowserProperty {
 
     @Before
     public void startUp() {
-        browserPropertySetUp("yandex");
+        browserPropertySetUp("chrome");
         clearBrowserCookies();
     }
 
@@ -30,9 +34,12 @@ public class ClientCabinetFlowTest extends BrowserProperty {
     public void tearDown() {
         UserOperations userOperations = new UserOperations();
         userOperations.delete();
+        closeWindow();
+        closeWebDriver();
     }
 
     @Test
+    @DisplayName("Проверка перехода в личный кабинет авторизованного пользователя")
     public void EnterToClientCabinetPageTest() {
 
 
@@ -50,8 +57,8 @@ public class ClientCabinetFlowTest extends BrowserProperty {
         HeaderPage headerPage = authorizationPage.clickEnterFromAuthorizationPageButton();
         ClientCabinetPage clientCabinetPage = headerPage.clickCabinetButtonAfterAuthorization();
 
-        //Проверка перехода в личный кабинет
-        clientCabinetPage.exitButton.shouldBe(Condition.visible);
+
+        Assert.assertFalse("Кнопка Выйти не отображается на странице", clientCabinetPage.isExitButtonIsDisplayed());
 
     }
 }

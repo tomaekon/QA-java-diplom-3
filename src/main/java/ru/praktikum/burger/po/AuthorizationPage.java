@@ -1,6 +1,7 @@
 package ru.praktikum.burger.po;
 
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
@@ -16,10 +17,9 @@ public class AuthorizationPage extends HeaderPage {
     @FindBy(how = How.CSS, using = ".text_type_main-default[name ='Пароль']")
     private SelenideElement passwordField;
 
-
     //Локатор кнопки "Войти"
     @FindBy(how = How.XPATH, using = ".//button[text() ='Войти']")
-    public SelenideElement enterFromAuthorizationPageButton;
+    private SelenideElement enterFromAuthorizationPageButton;
 
     //Локатор кнопки "Зарегистрироваться"
     @FindBy(how = How.XPATH, using = ".//a[text() ='Зарегистрироваться']")
@@ -29,32 +29,35 @@ public class AuthorizationPage extends HeaderPage {
     @FindBy(how = How.XPATH, using = ".//a[text() ='Восстановить пароль']")
     private SelenideElement recoverPasswordButton;
 
-    //Метод заполнения поля email
+    @Step("Заполнение поля email")
     public void setEmailField(String email) {
         emailField.setValue(email);
     }
 
-    //Метод заполнения поля пароль
+    @Step("Заполнение поля пароль")
     public void setPasswordField(String password) {
         passwordField.setValue(password);
     }
 
-    //Метод нажатия на кнопку Войти
+    @Step("Нажать на кнопку Войти")
     public MainPage clickEnterFromAuthorizationPageButton() {
         enterFromAuthorizationPageButton.click();
         return page(MainPage.class);
-
     }
 
-    //Метод нажатия на кнопку Зарегистрироваться
+    @Step("Нажать на кнопку Зарегистрироваться")
     public RegistrationPage clickRegistrationButton() {
         registrationButton.click();
         return page(RegistrationPage.class);
     }
 
-    //Метод нажатия на кнопку Востановить пароль
+    @Step("Нажать на кнопку Восстановить пароль")
     public RecoverPasswordPage clickRecoverPasswordButton() {
         recoverPasswordButton.click();
         return page(RecoverPasswordPage.class);
+    }
+    @Step("Проверка отображения кнопки Войти на странице авторизации")
+    public boolean isEnterFromAuthorizationPageButtonIsDisplayed() {
+        return enterFromAuthorizationPageButton.isDisplayed();
     }
 }

@@ -1,26 +1,16 @@
 import com.BrowserProperty;
-import com.UserOperations;
-import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.Browser;
+import io.qameta.allure.junit4.DisplayName;
 import org.hamcrest.MatcherAssert;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import ru.praktikum.burger.po.AuthorizationPage;
-import ru.praktikum.burger.po.ClientCabinetPage;
-import ru.praktikum.burger.po.HeaderPage;
 import ru.praktikum.burger.po.MainPage;
-
-import java.util.Map;
-
 import static com.codeborne.selenide.Selenide.*;
-import static com.codeborne.selenide.WebDriverRunner.setWebDriver;
 import static org.hamcrest.CoreMatchers.containsString;
 
 public class ConstructorTest extends BrowserProperty {
-
 
     @Before
     public void startUp() {
@@ -29,48 +19,45 @@ public class ConstructorTest extends BrowserProperty {
     }
 
     @After
-    public void tearDown() {}
-
-    @Test
-    public void ClickToBunButtonTest() throws InterruptedException {
-
-
-        MainPage mainPage = open(MainPage.URL, MainPage.class);
-        String actualTextActiveButtonOne = mainPage.activeButton.getText();
-        String expectedTextFromActiveButtonOne = "Булки";
-
-        //Проверка активности кнопки "Булки" при входе
-        MatcherAssert.assertThat("Раздел Булки не активен", actualTextActiveButtonOne, containsString(expectedTextFromActiveButtonOne));
-
-        MainPage mainSausePage = mainPage.clickSauseButton();
-        MainPage mainBunPage = mainSausePage.clickBunButton();
-        String actualTextActiveButtonTwo = mainBunPage.activeButton.getText();
-        String expectedTextFromActiveButtonTwo = "Булки";
-        //Проверка активности кнопки "Булки" при переходе из раздела "Соусы"
-        MatcherAssert.assertThat("Раздел Булки не активен", actualTextActiveButtonTwo, containsString(expectedTextFromActiveButtonTwo));
-
+    public void tearDown() {
+        closeWindow();
+        closeWebDriver();
     }
 
     @Test
+    @DisplayName("Проверка перехода на вкладку Булки")
+    public void ClickToBunButtonTest() {
+
+        MainPage mainPage = open(MainPage.URL, MainPage.class);
+        String actualTextActiveButtonOne = mainPage.getTextActiveButton();
+        String expectedTextFromActiveButton= "Булки";
+        Assert.assertEquals("Раздел Булки не активен", actualTextActiveButtonOne, expectedTextFromActiveButton);
+
+        MainPage mainSausePage = mainPage.clickSauseButton();
+        MainPage mainBunPage = mainSausePage.clickBunButton();
+        String actualTextActiveButtonTwo = mainBunPage.getTextActiveButton();
+        Assert.assertEquals("Раздел Булки не активен", actualTextActiveButtonTwo, expectedTextFromActiveButton);
+    }
+
+    @Test
+    @DisplayName("Проверка перехода на вкладку Соусы")
     public void ClickToSauseButtonTest() {
 
         MainPage mainPage = open(MainPage.URL, MainPage.class);
         MainPage mainSausePage = mainPage.clickSauseButton();
-        //Проверка Отображения надписей "Булки", "Соусы", "Начинки
-        String actualTextActiveButton = mainSausePage.activeButton.getText();
+        String actualTextActiveButton = mainSausePage.getTextActiveButton();
         String expectedTextFromActiveButton = "Соусы";
-        MatcherAssert.assertThat("Раздел Соусы не активен", actualTextActiveButton, containsString(expectedTextFromActiveButton));
+        Assert.assertEquals("Раздел Соусы не активен", actualTextActiveButton, expectedTextFromActiveButton);
     }
 
     @Test
+    @DisplayName("Проверка перехода на вкладку Начинки")
     public void ClickToFillingButtonTest() {
 
         MainPage mainPage = open(MainPage.URL, MainPage.class);
         MainPage mainFillingPage = mainPage.clickFillingButton();
-        //Проверка Отображения надписей "Булки", "Соусы", "Начинки
-        String actualTextActiveButton = mainFillingPage.activeButton.getText();
+        String actualTextActiveButton = mainFillingPage.getTextActiveButton();
         String expectedTextFromActiveButton = "Начинки";
-        MatcherAssert.assertThat("Раздел Начинки не активен", actualTextActiveButton, containsString(expectedTextFromActiveButton));
+        Assert.assertEquals("Раздел Начинки не активен", actualTextActiveButton, expectedTextFromActiveButton);
     }
-
 }

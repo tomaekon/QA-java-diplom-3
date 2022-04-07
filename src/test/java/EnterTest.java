@@ -2,15 +2,16 @@ import com.BrowserProperty;
 import com.UserOperations;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
+import io.qameta.allure.junit4.DisplayName;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import ru.praktikum.burger.po.*;
 
 import java.util.Map;
 
-import static com.codeborne.selenide.Selenide.clearBrowserCookies;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.*;
 
 public class EnterTest extends BrowserProperty {
 
@@ -18,19 +19,19 @@ public class EnterTest extends BrowserProperty {
     public void startUp() {
         browserPropertySetUp("yandex");
         clearBrowserCookies();
-
     }
 
     @After
     public void tearDown() {
         UserOperations userOperations = new UserOperations();
         userOperations.delete();
-
+        closeWindow();
+        closeWebDriver();
     }
 
     @Test
+    @DisplayName("Проверка авторизации через кнопку Войти в аккаунт с главной страницы")
     public void EnterFromMainPageTest() {
-
 
         MainPage mainPage = open(MainPage.URL, MainPage.class);
 
@@ -46,14 +47,13 @@ public class EnterTest extends BrowserProperty {
 
         MainPage mainPageAfterAuthorization = authorizationPage.clickEnterFromAuthorizationPageButton();
 
-        //Проверка входа в личный кабинет
-        mainPageAfterAuthorization.makeOderButton.shouldBe(Condition.visible);
+        Assert.assertFalse("Кнопка Оформить заказ не отображается", mainPageAfterAuthorization.isMakeOderButtonIsDisplayed());
 
     }
 
     @Test
+    @DisplayName("Проверка авторизации через страницу авторизации")
     public void EnterFromAuthorizationPageTest() {
-
 
         HeaderPage headerPage = open(HeaderPage.URL, HeaderPage.class);
         AuthorizationPage authorizationPage = headerPage.clickCabinetButton();
@@ -68,14 +68,13 @@ public class EnterTest extends BrowserProperty {
 
         MainPage mainPageAfterAuthorization = authorizationPage.clickEnterFromAuthorizationPageButton();
 
-        //Проверка входа в личный кабинет
-        mainPageAfterAuthorization.makeOderButton.shouldBe(Condition.visible);
+        Assert.assertFalse("Кнопка Оформить заказ не отображается", mainPageAfterAuthorization.isMakeOderButtonIsDisplayed());
 
     }
 
     @Test
+    @DisplayName("Проверка авторизации через страницу регистрации")
     public void EnterFromRegistrationPageTest() {
-
 
         HeaderPage headerPage = open(HeaderPage.URL, HeaderPage.class);
         AuthorizationPage authorizationPage = headerPage.clickCabinetButton();
@@ -92,14 +91,13 @@ public class EnterTest extends BrowserProperty {
 
         MainPage mainPageAfterAuthorization = authorizationPage.clickEnterFromAuthorizationPageButton();
 
-        //Проверка входа в личный кабинет
-        mainPageAfterAuthorization.makeOderButton.shouldBe(Condition.visible);
+        Assert.assertFalse("Кнопка Оформить заказ не отображается", mainPageAfterAuthorization.isMakeOderButtonIsDisplayed());
 
     }
 
     @Test
+    @DisplayName("Проверка авторизации через страницу восстановления пароля")
     public void EnterFromRecoverPasswordPageTest() {
-
 
         HeaderPage headerPage = open(HeaderPage.URL, HeaderPage.class);
         AuthorizationPage authorizationPage = headerPage.clickCabinetButton();
@@ -116,11 +114,7 @@ public class EnterTest extends BrowserProperty {
 
         MainPage mainPageAfterAuthorization = authorizationPage.clickEnterFromAuthorizationPageButton();
 
-        //Проверка входа в личный кабинет
-        mainPageAfterAuthorization.makeOderButton.shouldBe(Condition.visible);
-
+        Assert.assertFalse("Кнопка Оформить заказ не отображается", mainPageAfterAuthorization.isMakeOderButtonIsDisplayed());
     }
-
-
 }
 

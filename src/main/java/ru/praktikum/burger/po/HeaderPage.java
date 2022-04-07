@@ -1,6 +1,7 @@
 package ru.praktikum.burger.po;
 
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
@@ -21,33 +22,27 @@ public class HeaderPage {
     @FindBy(how = How.XPATH, using = ".//p[text()='Личный Кабинет']")
     private SelenideElement cabinetButton;
 
-    //Метод нажатия на кнопку Конструктор
+    @Step("Нажать на кнопку Конструктор")
     public MainPage clickConstructorButton() {
         constructorButton.click();
         return page(MainPage.class);
-
     }
 
-    //Метод нажатия на логотип StellarBurger
+    @Step("Нажать на логотип StellarBurger")
     public MainPage clickStellarBurgerLogo() {
         stellarBurgerLogo.click();
         return page(MainPage.class);
-
     }
 
-    //Метод нажатия на кнопку Личный Кабинет до авторизации
+    @Step("Нажать на кнопку Личный кабинет до авторизации")
     public AuthorizationPage clickCabinetButton() {
         cabinetButton.click();
         return page(AuthorizationPage.class);
-
     }
 
-    //Метод нажатия на кнопку Личный Кабинет после авторизации
+    @Step("Нажать на кнопку Личный кабинет после авторизации")
     public ClientCabinetPage clickCabinetButtonAfterAuthorization() {
         cabinetButton.click();
         return page(ClientCabinetPage.class);
-
     }
-
-
 }

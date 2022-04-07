@@ -2,6 +2,7 @@ package ru.praktikum.burger.po;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
@@ -18,21 +19,19 @@ public class MainPage extends HeaderPage {
 
     //Локатор активной кнопки "Булки"/"Соусы"/"Начики"
     @FindBy(how = How.CSS, using = ".tab_tab_type_current__2BEPc")
-    public SelenideElement activeButton;
-
+    private SelenideElement activeButton;
 
     //Локатор кнопки "Надписи Булки"
     @FindBy(how = How.XPATH, using = ".//h2[text()='Булки']")
-    public SelenideElement bunString;
+    private SelenideElement bunString;
 
     //Локатор кнопки "Надписи Соусы"
     @FindBy(how = How.XPATH, using = ".//h2[text()='Соусы']")
-    public SelenideElement sauceString;
+    private SelenideElement sauceString;
 
     //Локатор кнопки "Надписи Начинки"
     @FindBy(how = How.XPATH, using = ".//h2[text()='Начинки']")
-    public SelenideElement fillingString;
-
+    private SelenideElement fillingString;
 
     //Локатор кнопки "Войти в аккаунт"
     @FindBy(how = How.XPATH, using = ".//button[text() ='Войти в аккаунт']")
@@ -40,34 +39,38 @@ public class MainPage extends HeaderPage {
 
     //Локатор кнопки "Оформить заказ"
     @FindBy(how = How.XPATH, using = ".//button[text() ='Оформить заказ']")
-    public SelenideElement makeOderButton;
+    private SelenideElement makeOderButton;
 
-
-    //Метод нажатия на кнопку Булки
+    @Step("Нажать на кнопку Булки")
     public MainPage clickBunButton() {
         nonActiveButton.get(0).click();
         return page(MainPage.class);
     }
 
-    //Метод нажатия на кнопку Соусы
+    @Step("Нажать на кнопку Соусы")
     public MainPage clickSauseButton() {
         nonActiveButton.get(1).click();
         return page(MainPage.class);
     }
 
-    //Метод нажатия на кнопку Начинки
+    @Step("Нажать на кнопку Начинки")
     public MainPage clickFillingButton() {
         nonActiveButton.get(2).click();
         return page(MainPage.class);
     }
 
-
-    //Метод нажатия на кнопку Войти в аккаунт
+    @Step("Нажать на кнопку Войти в аккаунт")
     public AuthorizationPage clickEnterInAccountButton() {
         enterInAccountButton.click();
         return page(AuthorizationPage.class);
-
     }
-
+    @Step("Получение текста активной кнопки")
+    public String getTextActiveButton() {
+        return  activeButton.getText();
+    }
+    @Step("Проверка отображения кнопки Оформить заказ")
+    public boolean isMakeOderButtonIsDisplayed() {
+        return makeOderButton.isDisplayed();
+    }
 }
 
